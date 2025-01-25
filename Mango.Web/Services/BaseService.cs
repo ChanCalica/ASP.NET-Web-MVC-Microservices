@@ -54,6 +54,7 @@ public class BaseService : IBaseService
 
             apiResponse = await client.SendAsync(message);
 
+            // Need to refactor and pass the error message from backend 
             switch (apiResponse.StatusCode)
             {
                 case HttpStatusCode.NotFound:
