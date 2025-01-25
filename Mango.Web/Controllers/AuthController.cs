@@ -62,6 +62,10 @@ public class AuthController(IAuthService authService) : Controller
 
                 return RedirectToAction(nameof(Login));
             }
+            else
+            {
+                TempData["error"] = assignRole?.Message;
+            }
         }
 
         var roleList = new List<SelectListItem>()

@@ -9,12 +9,14 @@ public class AuthService(IBaseService baseService) : IAuthService
 {
     public async Task<ResponseDto?> AssignRoleAsync(AssignRoleRequestDto assignRoleRequestDto)
     {
-        return await baseService.SendAsync(new RequestDto()
+        var response = await baseService.SendAsync(new RequestDto()
         {
             ApiType = ApiType.POST,
             Data = assignRoleRequestDto,
-            Url = AuthAPIBase + "/api/auth/login"
+            Url = AuthAPIBase + "/api/auth/AssignRole"
         });
+
+        return response;
     }
 
     public async Task<ResponseDto?> LoginAsync(LoginRequestDto loginRequestDto)
@@ -23,7 +25,7 @@ public class AuthService(IBaseService baseService) : IAuthService
         {
             ApiType = ApiType.POST,
             Data = loginRequestDto,
-            Url = AuthAPIBase + "/api/auth/AssignRole"
+            Url = AuthAPIBase + "/api/auth/login"
         });
     }
 
