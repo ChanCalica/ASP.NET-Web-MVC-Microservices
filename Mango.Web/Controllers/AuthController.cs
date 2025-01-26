@@ -39,9 +39,15 @@ public class AuthController(IAuthService authService,
         }
         else
         {
-            ModelState.AddModelError("CustomError", responseDto.Message);
+            TempData["error"] = responseDto.Message;
+
             return View(obj);
         }
+        //else
+        //{
+        //    ModelState.AddModelError("CustomError", responseDto.Message);
+        //    return View(obj);
+        //}
     }
 
     [HttpGet]
@@ -89,10 +95,10 @@ public class AuthController(IAuthService authService,
 
                 return RedirectToAction(nameof(Login));
             }
-            else
-            {
-                TempData["error"] = assignRole?.Message;
-            }
+        }
+        else
+        {
+            TempData["error"] = result.Message;
         }
 
         var roleList = new List<SelectListItem>()
