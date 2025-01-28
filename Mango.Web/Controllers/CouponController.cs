@@ -5,20 +5,13 @@ using Newtonsoft.Json;
 
 namespace Mango.Web.Controllers;
 
-public class CouponController : Controller
+public class CouponController(ICouponService couponService) : Controller
 {
-    private readonly ICouponService _couponService;
-
-    public CouponController(ICouponService couponService)
-    {
-        _couponService = couponService;
-    }
-
     public async Task<IActionResult> CouponIndex()
     {
         List<CouponDto>? list = new();
 
-        ResponseDto? response = await _couponService.GetAllCouponsAsync();
+        ResponseDto? response = await couponService.GetAllCouponsAsync();
 
         if (response != null && response.IsSuccess)
         {
@@ -42,7 +35,7 @@ public class CouponController : Controller
     {
         if (ModelState.IsValid)
         {
-            ResponseDto? response = await _couponService.CreateCouponAsync(model);
+            ResponseDto? response = await couponService.CreateCouponAsync(model);
 
             if (response != null && response.IsSuccess)
             {
@@ -60,7 +53,7 @@ public class CouponController : Controller
 
     public async Task<IActionResult> CouponDelete(int couponId)
     {
-        ResponseDto? response = await _couponService.GetCouponByIdAsync(couponId);
+        ResponseDto? response = await couponService.GetCouponByIdAsync(couponId);
 
         if (response != null && response.IsSuccess)
         {
@@ -79,7 +72,7 @@ public class CouponController : Controller
     [HttpPost]
     public async Task<IActionResult> CouponDelete(CouponDto couponDto)
     {
-        ResponseDto? response = await _couponService.DeleteCouponAsync(couponDto.CouponId);
+        ResponseDto? response = await couponService.DeleteCouponAsync(couponDto.CouponId);
 
         if (response != null && response.IsSuccess)
         {

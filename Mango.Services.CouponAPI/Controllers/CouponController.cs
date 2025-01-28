@@ -28,7 +28,7 @@ public class CouponController : ControllerBase
     {
         try
         {
-            IEnumerable<Coupon> objList = _dbContext.Coupons.ToList();
+            IEnumerable<Coupon> objList = _dbContext.coupons.ToList();
 
             _response.Results = _mapper.Map<IEnumerable<CouponDto>>(objList);
         }
@@ -47,7 +47,7 @@ public class CouponController : ControllerBase
     {
         try
         {
-            Coupon obj = _dbContext.Coupons.First(c => c.CouponId == id);
+            Coupon obj = _dbContext.coupons.First(c => c.CouponId == id);
 
             _response.Results = _mapper.Map<CouponDto>(obj);
         }
@@ -66,7 +66,7 @@ public class CouponController : ControllerBase
     {
         try
         {
-            Coupon obj = _dbContext.Coupons.First(c => c.CouponCode.ToLower() == code.ToLower());
+            Coupon obj = _dbContext.coupons.First(c => c.CouponCode.ToLower() == code.ToLower());
 
             _response.Results = _mapper.Map<CouponDto>(obj);
         }
@@ -80,13 +80,14 @@ public class CouponController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "ADMIN")]
     public ResponseDto CreateCoupon([FromBody] CouponDto couponDto)
     {
         try
         {
             Coupon obj = _mapper.Map<Coupon>(couponDto);
 
-            _dbContext.Coupons.Add(obj);
+            _dbContext.coupons.Add(obj);
 
             _dbContext.SaveChanges();
 
@@ -102,13 +103,14 @@ public class CouponController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize(Roles = "ADMIN")]
     public ResponseDto UpdateCoupon([FromBody] CouponDto couponDto)
     {
         try
         {
             Coupon obj = _mapper.Map<Coupon>(couponDto);
 
-            _dbContext.Coupons.Update(obj);
+            _dbContext.coupons.Update(obj);
 
             _dbContext.SaveChanges();
 
@@ -124,12 +126,13 @@ public class CouponController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = "ADMIN")]
     public ResponseDto DeleteCoupon(int id)
     {
         try
         {
-            Coupon obj = _dbContext.Coupons.First(c => c.CouponId == id);
-            _dbContext.Coupons.Remove(obj);
+            Coupon obj = _dbContext.coupons.First(c => c.CouponId == id);
+            _dbContext.coupons.Remove(obj);
             _dbContext.SaveChanges();
         }
         catch (Exception ex)

@@ -5,7 +5,7 @@ namespace Mango.Services.CouponAPI.Data;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public DbSet<Coupon> Coupons { get; set; }
+    public DbSet<Coupon> coupons { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

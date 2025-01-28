@@ -1,21 +1,14 @@
 ﻿using Mango.Web.Models;
 using Mango.Web.Services.IServices;
-using static Mango.Web.Utility.StaticDetails;
+using static Mango.Web.Utility.StaticDetail;
 
 namespace Mango.Web.Services;
 
-public class CouponService : ICouponService
+public class CouponService(IBaseService baseService) : ICouponService
 {
-    private readonly IBaseService _baseService;
-
-    public CouponService(IBaseService baseService)
-    {
-        _baseService = baseService;
-    }
-
     public async Task<ResponseDto?> CreateCouponAsync(CouponDto couponDto)
     {
-        return await _baseService.SendAsync(new RequestDto()
+        return await baseService.SendAsync(new RequestDto()
         {
             ApiType = ApiType.POST,
             Data = couponDto,
@@ -25,7 +18,7 @@ public class CouponService : ICouponService
 
     public async Task<ResponseDto?> DeleteCouponAsync(int id)
     {
-        return await _baseService.SendAsync(new RequestDto()
+        return await baseService.SendAsync(new RequestDto()
         {
             ApiType = ApiType.DELETE,
             Url = CouponAPIBase + $"/api/coupon/{id}"
@@ -34,7 +27,7 @@ public class CouponService : ICouponService
 
     public async Task<ResponseDto?> GetAllCouponsAsync()
     {
-        return await _baseService.SendAsync(new RequestDto()
+        return await baseService.SendAsync(new RequestDto()
         {
             ApiType = ApiType.GET,
             Url = CouponAPIBase + "/api/coupon"
@@ -43,7 +36,7 @@ public class CouponService : ICouponService
 
     public async Task<ResponseDto?> GetCouponByCodeAsync(string couponCode)
     {
-        return await _baseService.SendAsync(new RequestDto()
+        return await baseService.SendAsync(new RequestDto()
         {
             ApiType = ApiType.GET,
             Url = CouponAPIBase + $"/api/coupon/GetCouponByCode/{couponCode}"
@@ -52,7 +45,7 @@ public class CouponService : ICouponService
 
     public async Task<ResponseDto?> GetCouponByIdAsync(int id)
     {
-        return await _baseService.SendAsync(new RequestDto()
+        return await baseService.SendAsync(new RequestDto()
         {
             ApiType = ApiType.GET,
             Url = CouponAPIBase + $"/api/coupon/{id}"
@@ -61,7 +54,7 @@ public class CouponService : ICouponService
 
     public async Task<ResponseDto?> UpdateCouponAsync(CouponDto couponDto)
     {
-        return await _baseService.SendAsync(new RequestDto()
+        return await baseService.SendAsync(new RequestDto()
         {
             ApiType = ApiType.PUT,
             Data = couponDto,

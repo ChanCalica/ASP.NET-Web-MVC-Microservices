@@ -1,7 +1,7 @@
 ﻿using Mango.Web.Models;
 using Mango.Web.Models.Dto.AuthDto;
 using Mango.Web.Services.IServices;
-using static Mango.Web.Utility.StaticDetails;
+using static Mango.Web.Utility.StaticDetail;
 
 namespace Mango.Web.Services;
 
@@ -26,7 +26,7 @@ public class AuthService(IBaseService baseService) : IAuthService
             ApiType = ApiType.POST,
             Data = loginRequestDto,
             Url = AuthAPIBase + "/api/auth/login"
-        });
+        }, withBearer: false);
     }
 
     public async Task<ResponseDto?> RegisterAsync(RegistrationRequestDto registrationRequestDto)
@@ -36,6 +36,6 @@ public class AuthService(IBaseService baseService) : IAuthService
             ApiType = ApiType.POST,
             Data = registrationRequestDto,
             Url = AuthAPIBase + "/api/auth/register"
-        });
+        }, withBearer: false);
     }
 }
