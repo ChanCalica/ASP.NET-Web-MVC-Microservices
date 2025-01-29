@@ -9,7 +9,7 @@ namespace Mango.Services.ProductAPI.Services;
 
 public class ProductService(AppDbContext appDbContext, IMapper mapper) : IProductService
 {
-    private readonly ResponseDto _response = new();
+    private ResponseDto _response = new();
 
     public async Task<ResponseDto> CreateProductAsync(ProductDto productDto)
     {

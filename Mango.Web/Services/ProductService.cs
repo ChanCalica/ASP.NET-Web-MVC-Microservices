@@ -14,7 +14,7 @@ public class ProductService(IBaseService baseService) : IProductService
             ApiType = ApiType.POST,
             Data = product,
             Url = ProductAPIBase + "/api/product"
-        }, withBearer: false);
+        });
 
         return response;
     }
@@ -25,7 +25,7 @@ public class ProductService(IBaseService baseService) : IProductService
         {
             ApiType = ApiType.DELETE,
             Url = ProductAPIBase + $"/api/product/{id}"
-        }, withBearer: false);
+        });
 
         return response;
     }
@@ -36,7 +36,7 @@ public class ProductService(IBaseService baseService) : IProductService
         {
             ApiType = ApiType.GET,
             Url = ProductAPIBase + "/api/product"
-        }, withBearer: false);
+        });
 
         return response;
     }
@@ -47,7 +47,7 @@ public class ProductService(IBaseService baseService) : IProductService
         {
             ApiType = ApiType.GET,
             Url = ProductAPIBase + $"/api/product/{id}"
-        }, withBearer: false);
+        });
 
         return response;
     }
@@ -59,7 +59,7 @@ public class ProductService(IBaseService baseService) : IProductService
             ApiType = ApiType.PUT,
             Data = product,
             Url = ProductAPIBase + "/api/product"
-        }, withBearer: false);
+        });
 
         return response;
     }

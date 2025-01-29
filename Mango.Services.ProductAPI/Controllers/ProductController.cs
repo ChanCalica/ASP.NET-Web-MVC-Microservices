@@ -1,5 +1,6 @@
 ﻿using Mango.Services.ProductAPI.Models.Dto;
 using Mango.Services.ProductAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mango.Services.ProductAPI.Controllers
@@ -26,7 +27,7 @@ namespace Mango.Services.ProductAPI.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> CreateProduct(ProductDto productDto)
         {
             var response = await productService.CreateProductAsync(productDto);
@@ -35,7 +36,7 @@ namespace Mango.Services.ProductAPI.Controllers
         }
 
         [HttpPut]
-        //[Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> UpdateProduct(ProductDto productDto)
         {
             var response = await productService.UpdateProductAsync(productDto);
@@ -44,7 +45,7 @@ namespace Mango.Services.ProductAPI.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        //[Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var response = await productService.DeleteProductAsync(id);
