@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Mango.Services.ShoppingCartAPI.Services;
 
-public class CartService(AppDbContext appDbContext, IMapper mapper, IProductService productService) : ICartService
+public class CartService(AppDbContext appDbContext, IMapper mapper, IProductService productService, ICouponService couponService) : ICartService
 {
     private ResponseDto _response = new();
 
@@ -29,6 +29,59 @@ public class CartService(AppDbContext appDbContext, IMapper mapper, IProductServ
             {
                 item.Product = productDtos.FirstOrDefault(p => p.ProductId == item.ProductId);
                 cartDto.CartHeader.CartTotal += item.Count * item.Product.Price;
+            }
+
+            // Apply coupon if any
+            if (!string.IsNullOrEmpty(cartDto.CartHeader.CouponCode))
+            {
+                var coupon = await couponService.GetCouponByCode(cartDto.CartHeader.CouponCode);
+                if (coupon != null && cartDto.CartHeader.CartTotal > coupon.MinAmount)
+                {
+                    cartDto.CartHeader.CartTotal -= coupon.DiscountAmount;
+                    cartDto.CartHeader.Discount = coupon.DiscountAmount;
+                }
+            }
+
+            _response.Results = cartDto;
+        }
+        catch (Exception ex)
+        {
+            _response.IsSuccess = false;
+            _response.Message = ex.Message;
+        }
+
+        return _response;
+    }
+
+    public async Task<ResponseDto> GetCartAsyncVersionTwo(string userId)
+    {
+        try
+        {
+            var cartDto = new CartDto()
+            {
+                CartHeader = mapper.Map<CartHeaderDto>(appDbContext.CartHeaders.First(c => c.UserId == userId))
+            };
+
+            cartDto.CartDetails = mapper.Map<IEnumerable<CartDetailsDto>>(appDbContext.CartDetails.
+                Where(c => c.CardHeaderId == cartDto.CartHeader.CartHeaderId));
+
+            foreach (var item in cartDto.CartDetails)
+            {
+                var product = await productService.GetProductByIdAsync(item.ProductId);
+
+                item.Product = product;
+                cartDto.CartHeader.CartTotal += item.Count * item.Product.Price;
+            }
+
+            // Apply coupon if any
+            if (!string.IsNullOrEmpty(cartDto.CartHeader.CouponCode))
+            {
+                var coupon = await couponService.GetCouponByCode(cartDto.CartHeader.CouponCode);
+                if (coupon != null && cartDto.CartHeader.CartTotal > coupon.MinAmount)
+                {
+                    cartDto.CartHeader.CartTotal -= coupon.DiscountAmount;
+                    cartDto.CartHeader.Discount = coupon.DiscountAmount;
+                }
             }
 
             _response.Results = cartDto;
@@ -68,37 +121,6 @@ public class CartService(AppDbContext appDbContext, IMapper mapper, IProductServ
             cartFromDb.CouponCode = string.Empty;
             appDbContext.CartHeaders.Update(cartFromDb);
             await appDbContext.SaveChangesAsync();
-        }
-        catch (Exception ex)
-        {
-            _response.IsSuccess = false;
-            _response.Message = ex.Message;
-        }
-
-        return _response;
-    }
-
-    public async Task<ResponseDto> GetCartAsyncVersionTwo(string userId)
-    {
-        try
-        {
-            var cartDto = new CartDto()
-            {
-                CartHeader = mapper.Map<CartHeaderDto>(appDbContext.CartHeaders.First(c => c.UserId == userId))
-            };
-
-            cartDto.CartDetails = mapper.Map<IEnumerable<CartDetailsDto>>(appDbContext.CartDetails.
-                Where(c => c.CardHeaderId == cartDto.CartHeader.CartHeaderId));
-
-            foreach (var item in cartDto.CartDetails)
-            {
-                var product = await productService.GetProductByIdAsync(item.ProductId);
-
-                item.Product = product;
-                cartDto.CartHeader.CartTotal += item.Count * item.Product.Price;
-            }
-
-            _response.Results = cartDto;
         }
         catch (Exception ex)
         {
