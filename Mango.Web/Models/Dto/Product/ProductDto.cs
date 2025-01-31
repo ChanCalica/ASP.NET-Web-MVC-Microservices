@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Mango.Web.Models.Dto.ProductDto;
+namespace Mango.Web.Models.Dto.Product;
 
 public class ProductDto
 {

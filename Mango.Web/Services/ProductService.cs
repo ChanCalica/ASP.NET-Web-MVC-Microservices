@@ -1,5 +1,5 @@
 ﻿using Mango.Web.Models;
-using Mango.Web.Models.Dto.ProductDto;
+using Mango.Web.Models.Dto.Product;
 using Mango.Web.Services.IServices;
 using static Mango.Web.Utility.StaticDetail;
 

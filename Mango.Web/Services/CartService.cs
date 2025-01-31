@@ -32,7 +32,7 @@ public class CartService(IBaseService baseService) : ICartService
         {
             ApiType = ApiType.POST,
             Data = cartDetailsId,
-            Url = CouponAPIBase + "/api/cart/RemoveCart"
+            Url = ShoppingCartAPI + "/api/cart/RemoveCart"
         });
     }
 
@@ -42,7 +42,7 @@ public class CartService(IBaseService baseService) : ICartService
         {
             ApiType = ApiType.POST,
             Data = cartDto,
-            Url = CouponAPIBase + "/api/cart/CartUpsert"
+            Url = ShoppingCartAPI + "/api/cart/CartUpsert"
         });
     }
 }

@@ -1,4 +1,4 @@
-﻿using Mango.Web.Models.Dto.ProductDto;
+﻿using Mango.Web.Models.Dto.Product;
 using Mango.Web.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
