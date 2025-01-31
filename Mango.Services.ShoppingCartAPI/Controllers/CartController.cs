@@ -21,14 +21,14 @@ public class CartController(ICartService cartService) : ControllerBase
     {
         var response = await cartService.ApplyCouponAsync(cartDto);
 
-        return Ok();
+        return Ok(response);
     }
 
     [HttpPost("RemoveCoupon")]
     public async Task<IActionResult> RemoveCoupon([FromBody] CartDto cartDto)
     {
         var response = await cartService.RemoveCouponAsync(cartDto);
-        return Ok();
+        return Ok(response);
     }
 
     [HttpPost("CartUpsert")]
