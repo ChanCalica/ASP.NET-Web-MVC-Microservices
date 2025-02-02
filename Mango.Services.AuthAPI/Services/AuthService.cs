@@ -1,4 +1,5 @@
-﻿using Mango.Services.AuthAPI.Data;
+﻿using Mango.MessageBus;
+using Mango.Services.AuthAPI.Data;
 using Mango.Services.AuthAPI.Models;
 using Mango.Services.AuthAPI.Models.Dto;
 using Mango.Services.AuthAPI.Services.IService;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 namespace Mango.Services.AuthAPI.Services;
 
 public class AuthService(AppDbContext appDbContext, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
-    IJwtTokenGenerator jwtTokenGenerator) : IAuthService
+    IJwtTokenGenerator jwtTokenGenerator, IMessageBus messageBus, IConfiguration configuration) : IAuthService
 {
     public async Task<ResponseDto> AssignRole(string email, string roleName)
     {
@@ -97,6 +98,7 @@ public class AuthService(AppDbContext appDbContext, UserManager<ApplicationUser>
                     PhoneNumber = userToReturn.PhoneNumber
                 };
 
+                await messageBus.PublishMessage(registrationRequestDto.Email, configuration.GetValue<string>("TopicAndQueueNames:RegisterUserQueue"));
                 return "";
             }
             else

@@ -16,6 +16,12 @@ public class CartController(ICartService cartService) : Controller
         return View(await LoadCartDtoBasedOnLoggedInUser());
     }
 
+    [Authorize]
+    public async Task<IActionResult> Checkout()
+    {
+        return View(await LoadCartDtoBasedOnLoggedInUser());
+    }
+
     public async Task<IActionResult> Remove(int cartDetailsId)
     {
         var userId = User.Claims.Where(c => c.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
@@ -37,6 +43,21 @@ public class CartController(ICartService cartService) : Controller
         if (response != null && response.IsSuccess)
         {
             TempData["success"] = "Cart updated successfully";
+            return RedirectToAction(nameof(CartIndex));
+        }
+
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EmailCart(CartDto cartDto)
+    {
+        CartDto cart = await LoadCartDtoBasedOnLoggedInUser();
+        cart.CartHeader.Email = User.Claims.Where(c => c.Type == JwtRegisteredClaimNames.Email)?.FirstOrDefault()?.Value;
+        ResponseDto? response = await cartService.EmailCart(cart);
+        if (response != null && response.IsSuccess)
+        {
+            TempData["success"] = "Email will be processed and sent shortly.";
             return RedirectToAction(nameof(CartIndex));
         }
 

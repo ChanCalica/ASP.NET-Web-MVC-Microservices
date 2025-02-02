@@ -10,4 +10,6 @@ public interface ICartService
     Task<ResponseDto> GetCartAsyncVersionTwo(string userId);
     Task<ResponseDto> CartUpsertAsync(CartDto cartDto);
     Task<ResponseDto> RemoveCartAsync(int cartDetailsId);
+
+    Task<ResponseDto> EmailCartRequestAsync(CartDto cartDto);
 }

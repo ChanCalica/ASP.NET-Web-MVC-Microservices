@@ -1,4 +1,5 @@
 using AutoMapper;
+using Mango.MessageBus;
 using Mango.Services.ShoppingCartAPI;
 using Mango.Services.ShoppingCartAPI.Data;
 using Mango.Services.ShoppingCartAPI.Extensions;
@@ -30,8 +31,10 @@ builder.Services.AddHttpClient("Coupon", client =>
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
-builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
+builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IMessageBus, MessageBus>();
 
+builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();

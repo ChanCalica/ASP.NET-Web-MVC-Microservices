@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Mango.MessageBus;
 using Mango.Services.ShoppingCartAPI.Data;
 using Mango.Services.ShoppingCartAPI.Models;
 using Mango.Services.ShoppingCartAPI.Models.Dto;
@@ -7,7 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Mango.Services.ShoppingCartAPI.Services;
 
-public class CartService(AppDbContext appDbContext, IMapper mapper, IProductService productService, ICouponService couponService) : ICartService
+public class CartService(AppDbContext appDbContext, IMapper mapper, IProductService productService, ICouponService couponService,
+    IMessageBus messageBus, IConfiguration configuration) : ICartService
 {
     private ResponseDto _response = new();
 
@@ -210,4 +212,19 @@ public class CartService(AppDbContext appDbContext, IMapper mapper, IProductServ
 
         return _response;
     }
+
+    public async Task<ResponseDto> EmailCartRequestAsync(CartDto cartDto)
+    {
+        try
+        {
+            await messageBus.PublishMessage(cartDto, configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue"));
+        }
+        catch (Exception ex)
+        {
+            _response.IsSuccess = false;
+            _response.Message = ex.Message;
+        }
+        return _response;
+    }
+
 }

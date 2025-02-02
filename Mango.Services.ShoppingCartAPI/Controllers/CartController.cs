@@ -46,4 +46,12 @@ public class CartController(ICartService cartService) : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPost("EmailCartRequest")]
+    public async Task<IActionResult> EmailCartRequest([FromBody] CartDto cartDto)
+    {
+        var response = await cartService.EmailCartRequestAsync(cartDto);
+
+        return Ok(response);
+    }
 }
