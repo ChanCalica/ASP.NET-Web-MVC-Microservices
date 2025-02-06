@@ -57,13 +57,13 @@ public class AuthController(IAuthService authService,
         {
             new SelectListItem
             {
-                Text = StaticDetail.RoleAdmin,
-                Value = StaticDetail.RoleAdmin
+                Text = StaticDetails.RoleAdmin,
+                Value = StaticDetails.RoleAdmin
             },
             new SelectListItem
             {
-                Text = StaticDetail.RoleCustomer,
-                Value = StaticDetail.RoleCustomer
+                Text = StaticDetails.RoleCustomer,
+                Value = StaticDetails.RoleCustomer
             }
         };
 
@@ -84,7 +84,7 @@ public class AuthController(IAuthService authService,
         {
             if (string.IsNullOrEmpty(obj.Role))
             {
-                obj.Role = StaticDetail.RoleCustomer;
+                obj.Role = StaticDetails.RoleCustomer;
             }
 
             assignRole = await authService.AssignRoleAsync(new AssignRoleRequestDto { Email = obj.Email, Role = obj.Role });
@@ -105,13 +105,13 @@ public class AuthController(IAuthService authService,
         {
             new SelectListItem
             {
-                Text = StaticDetail.RoleAdmin,
-                Value = StaticDetail.RoleAdmin
+                Text = StaticDetails.RoleAdmin,
+                Value = StaticDetails.RoleAdmin
             },
             new SelectListItem
             {
-                Text = StaticDetail.RoleCustomer,
-                Value = StaticDetail.RoleCustomer
+                Text = StaticDetails.RoleCustomer,
+                Value = StaticDetails.RoleCustomer
             }
         };
 

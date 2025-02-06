@@ -7,20 +7,20 @@ public class TokenProvider(IHttpContextAccessor httpContextAccessor) : ITokenPro
 {
     public void ClearToken()
     {
-        httpContextAccessor.HttpContext?.Response.Cookies.Delete(StaticDetail.TokenCookie);
+        httpContextAccessor.HttpContext?.Response.Cookies.Delete(StaticDetails.TokenCookie);
     }
 
     public string? GetToken()
     {
         string? token = null;
 
-        bool? hasToken = httpContextAccessor.HttpContext?.Request.Cookies.TryGetValue(StaticDetail.TokenCookie, out token);
+        bool? hasToken = httpContextAccessor.HttpContext?.Request.Cookies.TryGetValue(StaticDetails.TokenCookie, out token);
 
         return hasToken is true ? token : null;
     }
 
     public void SetToken(string token)
     {
-        httpContextAccessor.HttpContext?.Response.Cookies.Append(StaticDetail.TokenCookie, token);
+        httpContextAccessor.HttpContext?.Response.Cookies.Append(StaticDetails.TokenCookie, token);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Mango.Web.Models;
 using Mango.Web.Models.Dto.CartDto;
+using Mango.Web.Models.Dto.Order;
 using Mango.Web.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace Mango.Web.Controllers;
 
-public class CartController(ICartService cartService) : Controller
+public class CartController(ICartService cartService, IOrderService orderService) : Controller
 {
     [Authorize]
     public async Task<IActionResult> CartIndex()
@@ -20,6 +21,27 @@ public class CartController(ICartService cartService) : Controller
     public async Task<IActionResult> Checkout()
     {
         return View(await LoadCartDtoBasedOnLoggedInUser());
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Checkout(CartDto cartDto)
+    {
+        CartDto cart = await LoadCartDtoBasedOnLoggedInUser();
+        cart.CartHeader.Phone = cartDto.CartHeader.Phone;
+        cart.CartHeader.Email = cartDto.CartHeader.Email;
+        cart.CartHeader.Name = cartDto.CartHeader.Name;
+
+        var response = await orderService.CreateOrderAsync(cart);
+
+        OrderHeaderDto orderHeaderDto = JsonConvert.DeserializeObject<OrderHeaderDto>(response.Results.ToString());
+
+        if (response != null && response.IsSuccess)
+        {
+            // Get stripe session and redirect to stripe to place order
+        }
+
+        return View();
     }
 
     public async Task<IActionResult> Remove(int cartDetailsId)

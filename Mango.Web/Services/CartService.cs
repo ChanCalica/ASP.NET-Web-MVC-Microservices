@@ -1,7 +1,7 @@
 ﻿using Mango.Web.Models;
 using Mango.Web.Models.Dto.CartDto;
 using Mango.Web.Services.IServices;
-using static Mango.Web.Utility.StaticDetail;
+using static Mango.Web.Utility.StaticDetails;
 
 namespace Mango.Web.Services;
 
@@ -13,7 +13,7 @@ public class CartService(IBaseService baseService) : ICartService
         {
             ApiType = ApiType.POST,
             Data = cartDto,
-            Url = ShoppingCartAPI + "/api/cart/ApplyCoupon"
+            Url = ShoppingCartAPIBase + "/api/cart/ApplyCoupon"
         });
     }
 
@@ -23,7 +23,7 @@ public class CartService(IBaseService baseService) : ICartService
         {
             ApiType = ApiType.POST,
             Data = cartDto,
-            Url = ShoppingCartAPI + "/api/cart/EmailCartRequest"
+            Url = ShoppingCartAPIBase + "/api/cart/EmailCartRequest"
         });
     }
 
@@ -32,7 +32,7 @@ public class CartService(IBaseService baseService) : ICartService
         return await baseService.SendAsync(new RequestDto()
         {
             ApiType = ApiType.GET,
-            Url = ShoppingCartAPI + $"/api/cart/GetCart/{userId}"
+            Url = ShoppingCartAPIBase + $"/api/cart/GetCart/{userId}"
         });
     }
 
@@ -42,7 +42,7 @@ public class CartService(IBaseService baseService) : ICartService
         {
             ApiType = ApiType.POST,
             Data = cartDetailsId,
-            Url = ShoppingCartAPI + "/api/cart/RemoveCart"
+            Url = ShoppingCartAPIBase + "/api/cart/RemoveCart"
         });
     }
 
@@ -52,7 +52,7 @@ public class CartService(IBaseService baseService) : ICartService
         {
             ApiType = ApiType.POST,
             Data = cartDto,
-            Url = ShoppingCartAPI + "/api/cart/CartUpsert"
+            Url = ShoppingCartAPIBase + "/api/cart/CartUpsert"
         });
     }
 }

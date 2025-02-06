@@ -1,7 +1,7 @@
 ﻿using Mango.Web.Models;
 using Mango.Web.Models.Dto.Product;
 using Mango.Web.Services.IServices;
-using static Mango.Web.Utility.StaticDetail;
+using static Mango.Web.Utility.StaticDetails;
 
 namespace Mango.Web.Services;
 
